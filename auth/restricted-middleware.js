@@ -8,15 +8,17 @@ module.exports = (req, res, next) => {
         jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
             if (err) {
                 // token expired or is invalid
-                res.status(401).json({ message: "You shall not pass." });
+                res.status(401).json({ message: "Token is not valid." });
             } else {
                 // token is good
+                // req.user = decodedToken
                 req.user = { username: decodedToken.username };
                 next();
             }
         });
     } else {
-        res.status(400).json({ message: 'No Credentials.' })
+        res.status(400).json({ message: 'No authorization token provided.' })
     }
 };
 
+ 
